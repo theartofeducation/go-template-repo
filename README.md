@@ -1,4 +1,4 @@
-# AoEU Template Repo
+# AOEU Go Template Repo
 
 ![CI](https://github.com/theartofeducation/template-repo/workflows/CI/badge.svg?branch=main)
 
@@ -17,10 +17,9 @@ This is a template repo all AoEU repos should start with.
 1. Update files and repository information as needed
 1. Rebase `develop` on `main` to ensure that when you create a PR in the future,
    GitHub will allow it from `develop`
-    1. `git rebase -i origin/main`
+    1. `git rebase origin/main`
     1. `git push -f`
-1. Follow these steps to setup branch protection rules for `develop` and `main`
- in the new repository (manual setup)
+1. Follow these steps to set up branch protection rules for `develop` and `main` in the new repository (manual setup)
     1. Go to the repo page in GitHub
     1. Go to the ***Settings*** page
     1. Go to the ***Branches*** section
