@@ -3,7 +3,7 @@
   "no-hard-tabs": true,
   "whitespace": true,
   "MD003": { "style": "atx" }, # Header style
-  "MD004": { "style": "asterisk" } # Unordered list style
+  "MD004": { "style": "asterisk" }, # Unordered list style
   "MD007": { "indent": 4 }, # Unordered list indentation
   "MD013": false, # Line length
   "MD024": false, # Duplicate headers
