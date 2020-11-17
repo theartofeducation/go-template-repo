@@ -3,6 +3,11 @@
 
 # IDE files
 .vscode
+.idea
 
 # OS files
 .DS_Store
+
+# Vendor
+node_modules
+yarn-error.log
