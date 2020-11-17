@@ -29,11 +29,11 @@ No limitations at the time of writing.
 
 ### Rejected Solutions
 
-* Gin
+* [Gin](https://github.com/gin-gonic/gin)
     * Requires special middleware pattern
     * Uses special Context struct over standard library
-* Echo
+* [Echo](https://github.com/labstack/echo)
     * Requires special middleware pattern
     * Uses special Context struct over standard library
-* Chi
+* [Chi](https://github.com/go-chi/chi)
     * Not yet a compatible Go modules
