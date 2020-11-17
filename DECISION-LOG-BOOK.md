@@ -2,28 +2,38 @@
 
 Taken from [Decision Management in Software Engineering](https://medium.com/swlh/decision-management-in-software-engineering-ca60f9d40e02)
 
-## YYYY-MM-DD: Problem
+## 2020-11-17: What web framework should we use
 
 ### Decision Makers
 
-Who decides on this solution?
+* Christopher Lamm
+* Thomas Jean
 
 ### Context
 
-The current context and constraints during the decision.
+We will be using Go for several services and need to pick a framework to use across them all, so we have uniformity.
 
 ### Solution
 
-The acted solution.
+[gorilla/mux](https://github.com/gorilla/mux)
 
-#### Why This Soluition
+#### Why This Solution
 
-Why the solution was chosen.
+Mux and Chi are pretty similar, and we can easily switch one out for the other.
+
+As of this writing Chi is not a compatible Go module while Mux is, so we're basing our decision on that.
 
 #### Limitation
 
-The limitations and consequences of the solution.
+No limitations at the time of writing.
 
 ### Rejected Solutions
 
-All the rejected solutions, their consequences and why they were rejected.
+* Gin
+    * Requires special middleware pattern
+    * Uses special Context struct over standard library
+* Echo
+    * Requires special middleware pattern
+    * Uses special Context struct over standard library
+* Chi
+    * Not yet a compatible Go modules

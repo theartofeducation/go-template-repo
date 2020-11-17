@@ -4,6 +4,11 @@
 
 A template repo for quickly starting Go projects.
 
+## What's Included
+
+* Commit linting through NPM
+* [gorilla/mux](https://github.com/gorilla/mux) web framework
+
 ## How To Use This Template
 
 1. Go to the ***Create a new repository*** page on GitHub
