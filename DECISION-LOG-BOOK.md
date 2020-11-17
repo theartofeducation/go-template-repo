@@ -2,6 +2,40 @@
 
 Taken from [Decision Management in Software Engineering](https://medium.com/swlh/decision-management-in-software-engineering-ca60f9d40e02)
 
+---
+
+## 2020-11-17: What ORM should we use
+
+### Decision Makers
+
+* Christopher Lamm
+* Thomas Jean
+
+### Context
+
+We will be using Go for several services and need to pick an ORM to use across them all, so we have uniformity.
+
+### Solution
+
+[ent](https://github.com/facebook/ent)
+
+#### Why This Solution
+
+This tool is backed by Facebook and its community which will give us a lot of examples and support.
+
+Schema will be code and not hidden in tags.
+
+#### Limitation
+
+No known limitations at this time.
+
+### Rejected Solutions
+
+* [gorm](https://gorm.io/)
+    * More traditional ORM with expected overhead
+ 
+---
+
 ## 2020-11-17: What web framework should we use
 
 ### Decision Makers
