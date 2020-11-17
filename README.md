@@ -8,6 +8,7 @@ A template repo for quickly starting Go projects.
 
 * Commit linting through NPM
 * [gorilla/mux](https://github.com/gorilla/mux) web framework
+* Go linting through [golangci-lint](https://github.com/golangci/golangci-lint)
 
 ## How To Use This Template
 
@@ -43,4 +44,6 @@ A template repo for quickly starting Go projects.
 1. Create a new feature branch to work off
 1. Set up commit linting
     1. Run `yarn install`
+1. Setup golangci-lint
+    1. Run `brew install golangci/tap/golangci-lint`
 1. Updated the module path in `go.mod`

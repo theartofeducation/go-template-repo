@@ -33,7 +33,7 @@ No known limitations at this time.
 
 * [gorm](https://gorm.io/)
     * More traditional ORM with expected overhead
- 
+
 ---
 
 ## 2020-11-17: What web framework should we use
