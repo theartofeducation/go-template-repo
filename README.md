@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/theartofeducation/template-repo/workflows/CI/badge.svg?branch=main)
 
-This is a template repo all AoEU repos should start with.
+A template repo for quickly starting Go projects.
 
 ## How To Use This Template
 
