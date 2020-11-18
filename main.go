@@ -19,7 +19,6 @@ import (
 
 // TODO: Docker
 // TODO: Logging
-// TODO: Response helpers
 // TODO: Tests (black box)
 
 // env variables
