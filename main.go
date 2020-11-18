@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	"github.com/theartofeducation/go-template-repo/app"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -16,26 +16,6 @@ import (
 
 // TODO: Sentry
 // TODO: Docker
-
-// app will hold all the dependencies the application needs.
-type app struct {
-	db     interface{}
-	router *mux.Router
-}
-
-// routes holds all registered routes for the app.
-func (a *app) routes() {
-	a.router.HandleFunc("/", a.handleIndex()).Methods(http.MethodGet)
-}
-
-func (a *app) handleIndex() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		writer.WriteHeader(http.StatusOK)
-		writer.Header().Set("Content-Type", "application/json")
-
-		_, _ = io.WriteString(writer, "Hello world!")
-	}
-}
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -48,19 +28,14 @@ func main() {
 	}
 
 	router := mux.NewRouter()
-	a := app{router: router}
-	a.routes()
+	a := app.NewApp(router)
+	a.Routes()
 
 	errorChan := make(chan error, 2)
-	go startServer(a, errorChan, port)
+	go a.StartServer(errorChan, port)
 	go handleInterrupt(errorChan)
 
 	fmt.Printf("Terminated %s", <-errorChan)
-}
-
-func startServer(a app, errorChan chan error, port string) {
-	log.Printf("Starting server on port %s", port)
-	errorChan <- http.ListenAndServe(":"+port, a.router)
 }
 
 func handleInterrupt(errorChan chan error) {
