@@ -13,4 +13,5 @@ func (app *App) routes() {
 	})
 
 	app.router.HandleFunc("/", app.handleIndex()).Methods(http.MethodGet)
+	app.router.HandleFunc("/test-error", app.handleTestError()).Methods(http.MethodGet)
 }
