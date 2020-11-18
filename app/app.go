@@ -13,11 +13,13 @@ type App struct {
 	router *mux.Router
 }
 
-// NewApp creates and returns a new App instance.
+// NewApp creates a new instance of the App, registers the routes, and returns the instance.
 func NewApp(router *mux.Router) App {
 	app := App{
 		router: router,
 	}
+
+	app.routes()
 
 	return app
 }

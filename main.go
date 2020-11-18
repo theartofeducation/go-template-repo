@@ -16,26 +16,35 @@ import (
 
 // TODO: Sentry
 // TODO: Docker
+// TODO: Logging
+
+// env variables
+var (
+	port string
+)
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Println("could not load env")
-	}
-
-	port := os.Getenv("PORT")
-	if strings.TrimSpace(port) == "" {
-		log.Fatal("port was not specified")
-	}
+	loadEnvVariables()
 
 	router := mux.NewRouter()
 	a := app.NewApp(router)
-	a.Routes()
 
 	errorChan := make(chan error, 2)
 	go a.StartServer(errorChan, port)
 	go handleInterrupt(errorChan)
 
 	fmt.Printf("Terminated %s", <-errorChan)
+}
+
+func loadEnvVariables() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("could not load env")
+	}
+
+	port = os.Getenv("PORT")
+	if strings.TrimSpace(port) == "" {
+		log.Fatal("port was not specified")
+	}
 }
 
 func handleInterrupt(errorChan chan error) {
