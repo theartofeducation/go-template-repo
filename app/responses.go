@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func writeJSONResponse(writer http.ResponseWriter, statusCode int, v interface{}) {
 	writer.WriteHeader(statusCode)
 
 	if err := json.NewEncoder(writer).Encode(v); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 	}
 }
 
@@ -21,6 +22,6 @@ func writeErrorJSONResponse(writer http.ResponseWriter, statusCode int, err erro
 
 	body := fmt.Sprintf(`{"error": %q}`, err.Error())
 	if _, err := io.WriteString(writer, body); err != nil {
-		log.Println(err)
+		log.Errorln(err)
 	}
 }

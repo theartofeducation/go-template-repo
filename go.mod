@@ -7,4 +7,5 @@ require (
 	github.com/getsentry/sentry-go v0.8.0
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
+	github.com/sirupsen/logrus v1.7.0
 )

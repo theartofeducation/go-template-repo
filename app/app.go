@@ -1,8 +1,9 @@
 package app
 
 import (
-	"log"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
@@ -26,6 +27,6 @@ func NewApp(router *mux.Router) App {
 
 // StartServer starts the HTTP server on the specified port. Any errors will be returned on the specified channel.
 func (app App) StartServer(errorChan chan error, port string) {
-	log.Printf("Starting server on port %s", port)
+	log.Infof("Starting server on port %s", port)
 	errorChan <- http.ListenAndServe(":"+port, app.router)
 }

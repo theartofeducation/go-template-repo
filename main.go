@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -15,6 +14,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // TODO: Docker
@@ -43,13 +44,13 @@ func main() {
 	go handleInterrupt(errorChan)
 
 	err := <-errorChan
-	fmt.Printf("Terminated %s", err)
 	sentry.CaptureMessage(err.Error())
+	log.Errorln(err)
 }
 
 func loadEnvVariables() {
 	if err := godotenv.Load(); err != nil {
-		log.Println("could not load env")
+		log.Infoln("could not load env file")
 	}
 
 	port = os.Getenv("PORT")
@@ -59,15 +60,15 @@ func loadEnvVariables() {
 
 	dsn = os.Getenv("SENTRY_DSN")
 	if strings.TrimSpace(dsn) == "" {
-		log.Println("Sentry DSN not specified")
+		log.Infoln("Sentry DSN not specified")
 	}
 }
 
 func loadSentry(dsn string) {
 	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
-		log.Println("failed to connect to Sentry:", err)
+		log.Errorln("failed to connect to Sentry:", err)
 	} else {
-		log.Println("connected to Sentry")
+		log.Infoln("connected to Sentry")
 	}
 }
 

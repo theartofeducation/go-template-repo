@@ -12,6 +12,7 @@ A template repo for quickly starting Go projects.
 * [golangci-lint](https://github.com/golangci/golangci-lint)
 * [godotenv](https://github.com/joho/godotenv)
 * [Sentry](https://github.com/getsentry/sentry-go)
+* [Logrus](https://github.com/Sirupsen/logrus)
 
 ## How To Use This Template
 
