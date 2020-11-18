@@ -28,7 +28,6 @@ func (s *server) routes() {
 	s.router.HandleFunc("/", s.handleIndex()).Methods(http.MethodGet)
 }
 
-// handleIndex handles the "/" route.
 func (s *server) handleIndex() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusOK)
@@ -45,7 +44,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if strings.TrimSpace(port) == "" {
-		log.Fatal("no port was specified")
+		log.Fatal("port was not specified")
 	}
 
 	router := mux.NewRouter()
@@ -53,17 +52,19 @@ func main() {
 	s.routes()
 
 	errorChan := make(chan error, 2)
-
-	go func() {
-		log.Printf("Starting server at port %s", port)
-		errorChan <- http.ListenAndServe(":"+port, s.router)
-	}()
-
-	go func() {
-		signalChan := make(chan os.Signal, 1)
-		signal.Notify(signalChan, syscall.SIGINT)
-		errorChan <- fmt.Errorf("%s", <-signalChan)
-	}()
+	go startServer(s, errorChan, port)
+	go handleInterrupt(errorChan)
 
 	fmt.Printf("Terminated %s", <-errorChan)
+}
+
+func startServer(s server, errorChan chan error, port string) {
+	log.Printf("Starting server at port %s", port)
+	errorChan <- http.ListenAndServe(":"+port, s.router)
+}
+
+func handleInterrupt(errorChan chan error) {
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT)
+	errorChan <- fmt.Errorf("%s", <-signalChan)
 }
