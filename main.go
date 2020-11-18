@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +14,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// server will hold all the dependencies the application needs
+// TODO: Sentry
+// TODO: Docker
+
+// server will hold all the dependencies the application needs.
 type server struct {
 	db     interface{} // The database connection
 	router *mux.Router // The router
@@ -21,24 +25,22 @@ type server struct {
 
 // routes holds all registered routes for the server.
 func (s *server) routes() {
-	s.router.HandleFunc("/", s.handleIndex())
+	s.router.HandleFunc("/", s.handleIndex()).Methods(http.MethodGet)
 }
 
+// handleIndex handles the "/" route.
 func (s *server) handleIndex() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		_, _ = fmt.Fprint(writer, "Hello world!")
+		writer.WriteHeader(http.StatusOK)
+		writer.Header().Set("Content-Type", "application/json")
+
+		_, _ = io.WriteString(writer, "Hello world!")
 	}
 }
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("could not load env")
-	}
-
-	router := mux.NewRouter()
-
-	s := server{
-		router: router,
+		log.Println("could not load env")
 	}
 
 	port := os.Getenv("PORT")
@@ -46,10 +48,14 @@ func main() {
 		log.Fatal("no port was specified")
 	}
 
+	router := mux.NewRouter()
+	s := server{router: router}
+	s.routes()
+
 	errorChan := make(chan error, 2)
 
 	go func() {
-		log.Println("Starting server at port:", port)
+		log.Printf("Starting server at port %s", port)
 		errorChan <- http.ListenAndServe(":"+port, s.router)
 	}()
 

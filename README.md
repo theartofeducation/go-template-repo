@@ -8,6 +8,7 @@ A template repo for quickly starting Go projects.
 
 * Commit linting through NPM
 * [gorilla/mux](https://github.com/gorilla/mux) web framework
+* [ent](https://entgo.io/) ORM
 * [golangci-lint](https://github.com/golangci/golangci-lint) for linting
 * [godotenv](https://github.com/joho/godotenv) for loading .env files
 
@@ -48,3 +49,5 @@ A template repo for quickly starting Go projects.
 1. Setup golangci-lint
     1. Run `brew install golangci/tap/golangci-lint`
 1. Updated the module path in `go.mod`
+1. Update the `README.md`
+1. Commit and merge changes
