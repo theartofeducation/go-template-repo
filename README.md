@@ -8,7 +8,8 @@ A template repo for quickly starting Go projects.
 
 * Commit linting through NPM
 * [gorilla/mux](https://github.com/gorilla/mux) web framework
-* Go linting through [golangci-lint](https://github.com/golangci/golangci-lint)
+* [golangci-lint](https://github.com/golangci/golangci-lint) for linting
+* [godotenv](https://github.com/joho/godotenv) for loading .env files
 
 ## How To Use This Template
 
