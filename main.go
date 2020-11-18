@@ -33,13 +33,12 @@ func main() {
 
 	loadEnvVariables(log)
 
-	if strings.TrimSpace(dsn) != "" {
-		loadSentry(dsn, log)
-		defer sentry.Flush(time.Second * 2)
+	args := app.Args{
+		Router: mux.NewRouter(),
+		Log:    log,
+		DNS:    dsn,
 	}
-
-	router := mux.NewRouter()
-	a := app.NewApp(router, log)
+	a := app.NewApp(args)
 
 	errorChan := make(chan error, 2)
 	go a.StartServer(errorChan, port)
@@ -48,6 +47,8 @@ func main() {
 	err := <-errorChan
 	sentry.CaptureMessage(err.Error())
 	log.Errorln(err)
+
+	sentry.Flush(time.Second * 2)
 }
 
 func loadEnvVariables(log *logrus.Logger) {
@@ -63,14 +64,6 @@ func loadEnvVariables(log *logrus.Logger) {
 	dsn = os.Getenv("SENTRY_DSN")
 	if strings.TrimSpace(dsn) == "" {
 		log.Infoln("Sentry DSN not specified")
-	}
-}
-
-func loadSentry(dsn string, log *logrus.Logger) {
-	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
-		log.Errorln("failed to connect to Sentry:", err)
-	} else {
-		log.Infoln("connected to Sentry")
 	}
 }
 
