@@ -17,6 +17,8 @@ import (
 // TODO: Sentry
 // TODO: Docker
 // TODO: Logging
+// TODO: Response helpers
+// TODO: Tests
 
 // env variables
 var (
