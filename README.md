@@ -7,10 +7,11 @@ A template repo for quickly starting Go projects.
 ## What's Included
 
 * Commit linting through NPM
-* [gorilla/mux](https://github.com/gorilla/mux) web framework
-* [ent](https://entgo.io/) ORM
-* [golangci-lint](https://github.com/golangci/golangci-lint) for linting
-* [godotenv](https://github.com/joho/godotenv) for loading .env files
+* [gorilla/mux](https://github.com/gorilla/mux)
+* [ent](https://entgo.io/)
+* [golangci-lint](https://github.com/golangci/golangci-lint)
+* [godotenv](https://github.com/joho/godotenv)
+* [Sentry](https://github.com/getsentry/sentry-go)
 
 ## How To Use This Template
 

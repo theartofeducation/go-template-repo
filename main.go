@@ -7,6 +7,9 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
+
+	"github.com/getsentry/sentry-go"
 
 	"github.com/theartofeducation/go-template-repo/app"
 
@@ -14,7 +17,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// TODO: Sentry
 // TODO: Docker
 // TODO: Logging
 // TODO: Response helpers
@@ -23,10 +25,16 @@ import (
 // env variables
 var (
 	port string // The HTTP port the server will run on.
+	dsn  string // The Sentry DSN.
 )
 
 func main() {
 	loadEnvVariables()
+
+	if strings.TrimSpace(dsn) != "" {
+		loadSentry(dsn)
+		defer sentry.Flush(time.Second * 2)
+	}
 
 	router := mux.NewRouter()
 	a := app.NewApp(router)
@@ -35,7 +43,9 @@ func main() {
 	go a.StartServer(errorChan, port)
 	go handleInterrupt(errorChan)
 
-	fmt.Printf("Terminated %s", <-errorChan)
+	err := <-errorChan
+	fmt.Printf("Terminated %s", err)
+	sentry.CaptureMessage(err.Error())
 }
 
 func loadEnvVariables() {
@@ -46,6 +56,19 @@ func loadEnvVariables() {
 	port = os.Getenv("PORT")
 	if strings.TrimSpace(port) == "" {
 		log.Fatal("port was not specified")
+	}
+
+	dsn = os.Getenv("SENTRY_DSN")
+	if strings.TrimSpace(dsn) == "" {
+		log.Println("Sentry DSN not specified")
+	}
+}
+
+func loadSentry(dsn string) {
+	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
+		log.Println("failed to connect to Sentry:", err)
+	} else {
+		log.Println("connected to Sentry")
 	}
 }
 
