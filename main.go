@@ -18,11 +18,11 @@ import (
 // TODO: Docker
 // TODO: Logging
 // TODO: Response helpers
-// TODO: Tests
+// TODO: Tests (black box)
 
 // env variables
 var (
-	port string
+	port string // The HTTP port the server will run on.
 )
 
 func main() {
