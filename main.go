@@ -17,18 +17,18 @@ import (
 // TODO: Sentry
 // TODO: Docker
 
-// server will hold all the dependencies the application needs.
-type server struct {
-	db     interface{} // The database connection
-	router *mux.Router // The router
+// app will hold all the dependencies the application needs.
+type app struct {
+	db     interface{}
+	router *mux.Router
 }
 
-// routes holds all registered routes for the server.
-func (s *server) routes() {
-	s.router.HandleFunc("/", s.handleIndex()).Methods(http.MethodGet)
+// routes holds all registered routes for the app.
+func (a *app) routes() {
+	a.router.HandleFunc("/", a.handleIndex()).Methods(http.MethodGet)
 }
 
-func (s *server) handleIndex() http.HandlerFunc {
+func (a *app) handleIndex() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusOK)
 		writer.Header().Set("Content-Type", "application/json")
@@ -48,19 +48,19 @@ func main() {
 	}
 
 	router := mux.NewRouter()
-	s := server{router: router}
-	s.routes()
+	a := app{router: router}
+	a.routes()
 
 	errorChan := make(chan error, 2)
-	go startServer(s, errorChan, port)
+	go startServer(a, errorChan, port)
 	go handleInterrupt(errorChan)
 
 	fmt.Printf("Terminated %s", <-errorChan)
 }
 
-func startServer(s server, errorChan chan error, port string) {
-	log.Printf("Starting server at port %s", port)
-	errorChan <- http.ListenAndServe(":"+port, s.router)
+func startServer(a app, errorChan chan error, port string) {
+	log.Printf("Starting server on port %s", port)
+	errorChan <- http.ListenAndServe(":"+port, a.router)
 }
 
 func handleInterrupt(errorChan chan error) {
