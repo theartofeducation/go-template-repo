@@ -15,7 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // TODO: Docker
@@ -29,15 +29,17 @@ var (
 )
 
 func main() {
-	loadEnvVariables()
+	log := logrus.New()
+
+	loadEnvVariables(log)
 
 	if strings.TrimSpace(dsn) != "" {
-		loadSentry(dsn)
+		loadSentry(dsn, log)
 		defer sentry.Flush(time.Second * 2)
 	}
 
 	router := mux.NewRouter()
-	a := app.NewApp(router)
+	a := app.NewApp(router, log)
 
 	errorChan := make(chan error, 2)
 	go a.StartServer(errorChan, port)
@@ -48,7 +50,7 @@ func main() {
 	log.Errorln(err)
 }
 
-func loadEnvVariables() {
+func loadEnvVariables(log *logrus.Logger) {
 	if err := godotenv.Load(); err != nil {
 		log.Infoln("could not load env file")
 	}
@@ -64,7 +66,7 @@ func loadEnvVariables() {
 	}
 }
 
-func loadSentry(dsn string) {
+func loadSentry(dsn string, log *logrus.Logger) {
 	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
 		log.Errorln("failed to connect to Sentry:", err)
 	} else {
