@@ -53,3 +53,13 @@ A template repo for quickly starting Go projects.
 1. Updated the module path in `go.mod`
 1. Update the `README.md`
 1. Commit and merge changes
+
+## Running The Application
+
+Two Docker containers are setup. The first builds the application while the second will run the executable.
+
+1. `docker-compose up --build`
+
+## Testing
+
+Tests should be written with the application being a "black box" with no direct access. Test files go under the ***./tests*** directory which should follow the directory structure of the application.

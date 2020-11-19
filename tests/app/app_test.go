@@ -1,4 +1,4 @@
-package tests
+package apptests
 
 import (
 	"testing"
