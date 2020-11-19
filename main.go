@@ -18,7 +18,6 @@ import (
 )
 
 // TODO: Docker
-// TODO: Logging
 // TODO: Tests (black box)
 
 // env variables
