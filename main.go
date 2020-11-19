@@ -7,6 +7,8 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/pkg/errors"
+
 	"github.com/getsentry/sentry-go"
 
 	"github.com/theartofeducation/go-template-repo/app"
@@ -17,7 +19,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// TODO: Docker
 // TODO: Tests (black box)
 
 // env variables
@@ -43,6 +44,7 @@ func main() {
 	go handleInterrupt(errorChan)
 
 	err := <-errorChan
+	err = errors.Wrap(err, "main")
 	sentry.CaptureMessage(err.Error())
 	log.Errorln(err)
 

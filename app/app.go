@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/makasim/sentryhook"
 
 	"github.com/getsentry/sentry-go"
@@ -52,7 +54,7 @@ func (app App) StartServer(errorChan chan error, port string) {
 
 func (app *App) loadSentry(dsn string) {
 	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
-		app.log.Errorln("failed to connect to Sentry:", err)
+		app.log.Errorln("failed to connect to Sentry:", errors.Wrap(err, "app.loadSentry"))
 
 		return
 	}
