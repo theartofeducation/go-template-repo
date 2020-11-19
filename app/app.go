@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/makasim/sentryhook"
 
@@ -37,21 +38,7 @@ func NewApp(args Args) App {
 	app.routes()
 
 	if strings.TrimSpace(args.DNS) != "" {
-		if err := sentry.Init(sentry.ClientOptions{Dsn: args.DNS}); err != nil {
-			app.log.Errorln("failed to connect to Sentry:", err)
-
-			return app
-		}
-
-		hook := sentryhook.New([]logrus.Level{
-			logrus.PanicLevel,
-			logrus.FatalLevel,
-			logrus.ErrorLevel,
-		})
-
-		app.log.AddHook(hook)
-
-		app.log.Infoln("connected to Sentry")
+		app.loadSentry(args.DNS)
 	}
 
 	return app
@@ -61,4 +48,25 @@ func NewApp(args Args) App {
 func (app App) StartServer(errorChan chan error, port string) {
 	app.log.Infof("Starting server on port %s", port)
 	errorChan <- http.ListenAndServe(":"+port, app.router)
+}
+
+func (app *App) loadSentry(dsn string) {
+	if err := sentry.Init(sentry.ClientOptions{Dsn: dsn}); err != nil {
+		app.log.Errorln("failed to connect to Sentry:", err)
+
+		return
+	}
+
+	app.log.AddHook(sentryhook.New([]logrus.Level{
+		logrus.PanicLevel,
+		logrus.FatalLevel,
+		logrus.ErrorLevel,
+	}))
+
+	app.log.Infoln("connected to Sentry")
+}
+
+// Close performs actions needed when the App quits.
+func (app App) Close() {
+	sentry.Flush(time.Second * 2)
 }

@@ -6,7 +6,6 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
-	"time"
 
 	"github.com/getsentry/sentry-go"
 
@@ -48,7 +47,7 @@ func main() {
 	sentry.CaptureMessage(err.Error())
 	log.Errorln(err)
 
-	sentry.Flush(time.Second * 2)
+	a.Close()
 }
 
 func loadEnvVariables(log *logrus.Logger) {
