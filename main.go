@@ -19,8 +19,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// TODO: Tests (black box)
-
 // env variables
 var (
 	port string // The HTTP port the server will run on.
