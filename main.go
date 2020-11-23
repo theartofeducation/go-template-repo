@@ -33,7 +33,7 @@ func main() {
 	args := app.Args{
 		Router: mux.NewRouter(),
 		Log:    log,
-		DNS:    dsn,
+		DSN:    dsn,
 	}
 	a := app.NewApp(args)
 
