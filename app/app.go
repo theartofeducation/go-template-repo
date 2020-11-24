@@ -20,7 +20,7 @@ import (
 type Args struct {
 	Router *mux.Router
 	Log    *logrus.Logger
-	DNS    string
+	DSN    string
 }
 
 // App will hold all the dependencies the application needs.
@@ -39,8 +39,8 @@ func NewApp(args Args) App {
 
 	app.routes()
 
-	if strings.TrimSpace(args.DNS) != "" {
-		app.loadSentry(args.DNS)
+	if strings.TrimSpace(args.DSN) != "" {
+		app.loadSentry(args.DSN)
 	}
 
 	return app
